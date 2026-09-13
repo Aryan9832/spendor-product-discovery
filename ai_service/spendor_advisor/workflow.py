@@ -108,10 +108,28 @@ class IntentExtractor:
         # A bounded deterministic parser is the low-cost route for clear constraints.
         if intent.room_size or intent.product_type or intent.series:
             return intent, "rules-only"
-        # Model integration intentionally has a safe fallback; no answer depends on unvalidated model text.
-        if not os.getenv("GEMINI_API_KEY") and not os.getenv("OPENAI_API_KEY"):
+        key = os.getenv("GEMINI_API_KEY") or os.getenv("OPENAI_API_KEY")
+        if not key:
             return intent, "rules-only-no-key"
-        return intent, "structured-model-fallback"
+        try:
+            # Structured JSON is necessary but insufficient: Pydantic validates again before tool selection.
+            from google import genai
+            client = genai.Client(api_key=key)
+            prompt = f"""Extract only product-discovery constraints from this customer request:
+{question!r}
+
+Use room_size only for Small, Medium, or Large. Use product_type only for Stand-mount,
+Floorstanding, Centre, or Wall-mount. Use series only for A-Line, D-Line, or Classic.
+Do not guess constraints. Mark needs_human_help true when price, stock, or an audition is requested."""
+            response = client.models.generate_content(
+                model=os.getenv("GEMINI_GENERATION_MODEL", "gemini-3.8-flash"),
+                contents=prompt,
+                config={"response_mime_type": "application/json", "response_schema": ListenerIntent.model_json_schema(), "temperature": 0},
+            )
+            return ListenerIntent.model_validate_json(response.text), "gemini-structured-output"
+        except Exception:
+            # The deterministic parse is deliberately retained for outages, quota failures, and schema failures.
+            return intent, "model-error->rules"
 
 
 class AdvisorWorkflow:

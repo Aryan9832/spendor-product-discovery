@@ -100,7 +100,7 @@ Approved seed catalog JSON  --->  Express API  --->  React product finder
 
 ## Honest boundary
 
-The current model integration is intentionally optional: the service remains testable without a cloud key, and it fails back to validated deterministic behavior. With `GEMINI_API_KEY` configured, the next extension is to make the intent-extraction step use Gemini structured output and still validate it with the same Pydantic schema. This avoids claiming that JSON-shaped model output is automatically trustworthy.
+The model integration is intentionally optional: the service remains testable without a cloud key, and it fails back to validated deterministic behavior. With `GEMINI_API_KEY` configured, ambiguous requests use Gemini structured output for intent extraction and then pass through the same Pydantic schema validation before any tool call. This avoids claiming that JSON-shaped model output is automatically trustworthy.
 
 ## What I built
 
