@@ -20,6 +20,9 @@ pip install -r ai_service\requirements.txt
 $env:PYTHONPATH = "ai_service"
 uvicorn spendor_advisor.service:app --app-dir ai_service --reload --port 8000
 pytest ai_service/tests
+python ai_service/evals/run_evals.py
 ```
 
 Open `http://localhost:8000/docs` to exercise the typed API. The existing Node catalog service on port 8787 adds embedding-based retrieval when configured.
+
+The benchmark reports `recall_at_5` and constraint-pass rate over a fixed golden set. This is intentionally separate from model quality: a response is not acceptable if semantic ranking violates an explicit product constraint.

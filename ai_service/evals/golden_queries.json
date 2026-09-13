@@ -1,0 +1,8 @@
+[
+  {"query": "compact speaker for a small room", "expected_ids": ["a1-2"], "room": "Small"},
+  {"query": "floorstanding speaker for a large room", "expected_ids": ["a7-2", "d9-2"], "room": "Large"},
+  {"query": "a centre speaker for home cinema", "expected_ids": ["ac1", "ac2", "dc1"], "category": "Centre"},
+  {"query": "wall mounted surround speaker", "expected_ids": ["aw1", "ds1"], "category": "Wall-mount"},
+  {"query": "Classic series speaker", "expected_ids": ["classic-1-2", "classic-2-3", "classic-4-5"], "series": "Classic"},
+  {"query": "D-Line model for a medium room", "expected_ids": ["d7-2", "dc1"], "series": "D-Line", "room": "Medium"}
+]
