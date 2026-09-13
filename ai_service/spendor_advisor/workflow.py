@@ -8,6 +8,8 @@ import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 try:
     from opentelemetry import trace
     from opentelemetry.sdk.resources import Resource
@@ -18,6 +20,8 @@ except ImportError:  # Keeps deterministic evals runnable before optional observ
 
 from .catalog import CatalogTool
 from .models import AdviceResponse, Handoff, ListenerIntent, ProductEvidence, ProductType, RoomSize
+
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 
 
 class JsonTraceExporter(SpanExporter if trace else object):
