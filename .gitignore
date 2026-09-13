@@ -6,3 +6,8 @@ server/data/embeddings.json
 .npm-cache/
 outputs/
 work/
+.venv/
+ai_service/.cache/
+ai_service/traces/
+__pycache__/
+*.py[cod]

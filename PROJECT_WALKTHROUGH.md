@@ -87,6 +87,21 @@ Approved seed catalog JSON  --->  Express API  --->  React product finder
 - No performance percentage until a documented benchmark exists.
 # Spendor Product Discovery — interview walkthrough
 
+> **Portfolio positioning update:** This is now an AI-systems project first. The React experience is a demo client for the product-advisor system; it is not the project claim by itself.
+
+## AI-engineering walkthrough
+
+1. **Define a typed contract before invoking intelligence.** `ListenerIntent`, `ProductEvidence`, and `AdviceResponse` are Pydantic models. Untrusted or model-produced data must validate before it can select a tool, shape a response, or be returned by the API.
+2. **Use a bounded workflow, not an open-ended agent loop.** The advisor has four explicit transitions: extract constraints → retrieve from an approved tool → rerank and verify → answer or escalate. A transition counter fails closed after five steps.
+3. **Make tools the trust boundary.** The agent does not read arbitrary web pages or invent specifications. The `CatalogTool` is the only data-access path, and `mcp_server.py` exposes the same two capabilities through Model Context Protocol: `search_catalog` and `get_product_specification`.
+4. **Layer retrieval and reliability.** The tool uses the existing hybrid embedding-plus-deterministic Node service when it is running and falls back to a deterministic local ranker if it is unavailable. Hard constraints such as room size are never relaxed by semantic ranking.
+5. **Evaluate behavior, not just happy-path demos.** The golden tests verify constraint preservation, schema rejection, and semantic-cache behavior. GitHub Actions installs the AI requirements and runs this suite on every push and pull request.
+6. **Instrument decisions and cost.** Each run emits trace spans for extraction and retrieval, labels the retrieval route, reports latency and estimated input tokens, and records cache hits. Local traces are excluded from Git; a production deployment can swap the exporter for an OpenTelemetry collector or vendor backend.
+
+## Honest boundary
+
+The current model integration is intentionally optional: the service remains testable without a cloud key, and it fails back to validated deterministic behavior. With `GEMINI_API_KEY` configured, the next extension is to make the intent-extraction step use Gemini structured output and still validate it with the same Pydantic schema. This avoids claiming that JSON-shaped model output is automatically trustworthy.
+
 ## What I built
 
 This is a private, permissioned portfolio project for Spendor Audio. It is a product-discovery experience rather than a visual catalog: it supports structured filtering, semantic search, product comparison, full product pages, specification PDFs, a searchable authorised-retailer directory and a contact journey.

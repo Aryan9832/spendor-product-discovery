@@ -26,6 +26,10 @@ See [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md) for the implementation narr
 
 Private, permissioned interview portfolio project for Spendor Audio.
 
+## AI systems core
+
+The website is the demo layer. The engineering portfolio claim is the Python service in [`ai_service`](ai_service/README.md): a typed, bounded product-advisor workflow with MCP tools, hybrid-retrieval fallback, evaluation tests, a semantic cache, and trace instrumentation. The GitHub Action runs the AI reliability suite on every push and pull request.
+
 ## Run locally
 
 ```powershell
