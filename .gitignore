@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+server/data/imports/
+server/data/embeddings.json
+.npm-cache/
+outputs/
+work/

@@ -1,0 +1,11 @@
+{
+  "status": "draft - requires Spendor product-team review before metrics are published",
+  "purpose": "Baseline retrieval checks. Replace these draft cases with 75+ approved dealer/customer queries.",
+  "cases": [
+    { "id": "q-001", "query": "compact speaker for a small room", "relevantProductIds": ["a1-2", "classic-4-5", "ds1"] },
+    { "id": "q-002", "query": "floorstanding speaker for a large room", "relevantProductIds": ["d9-2", "classic-200", "a7-2"] },
+    { "id": "q-003", "query": "centre speaker for home theatre", "relevantProductIds": ["dc1"] },
+    { "id": "q-004", "query": "wall mounted speaker", "relevantProductIds": ["ds1"] },
+    { "id": "q-005", "query": "classic stand mount for a medium room", "relevantProductIds": ["classic-1-2"] }
+  ]
+}
